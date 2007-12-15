@@ -1,13 +1,13 @@
 // Puzzle constructor
-function Puzzle () {
-    this.initialize();
+function Puzzle (width, height, image) {
+    this.initialize(width, height, image);
 }
 
-Puzzle.prototype.initialize = function() {
-    this.createGameBoard(4,4);
+Puzzle.prototype.initialize = function(width, height, image) {
+    this.createGameBoard(width,height);
     this.placeTiles();
     this.blank = this.findBlank();
-    this.shuffleBoard(10000);
+    this.shuffleBoard(100);
 }
 
 Puzzle.prototype.findBlank = function() {
@@ -26,7 +26,7 @@ Puzzle.prototype.clickCell = function(ev) {
     this.moveTile(Event.element(ev))
 
     if (this.isFinished()) {
-        alert("You won!");
+        this.winAnimation();
     }
 }
 
@@ -83,7 +83,7 @@ Puzzle.prototype.isMovable = function(el) {
 
 Puzzle.prototype.moveTile = function(el) {
     // make sure that we have a tile and that is is movable.
-    if (el.classNames().grep(/tile/).length > 0 && this.isMovable(el)) {
+    if (el && el.classNames().grep(/tile/).length > 0 && this.isMovable(el)) {
         var new_blank = el.ancestors().first();
         this.blank.insert(el);
         this.blank = new_blank;
@@ -92,6 +92,9 @@ Puzzle.prototype.moveTile = function(el) {
 
 
 Puzzle.prototype.createGameBoard = function(width, height) {
+    this.GameBoardWidth = width;
+    this.GameBoardHeight = height;
+
     for (var i=0; i < height; i++) {
         var row = new Element('div', {'class': 'row', 'id': 'row' + i});
 
@@ -103,12 +106,97 @@ Puzzle.prototype.createGameBoard = function(width, height) {
     }
 }
 
-Puzzle.prototype.shuffleBoard = function(count) {
-    var tiles = $$('div.tile');
+Puzzle.prototype.getTileAbove = function(cell) {
+    var src = cell.id.match(/col(\d+)row(\d+)/);
+    var col = parseInt(src[1])
+    var row = parseInt(src[2])
     
-    for (var i=0;i<count;i++) {
-        var index = (Math.round(Math.random() * 100) % tiles.size());
-        this.moveTile(tiles[index]);
+    if (row-1 < 0) {
+        return this.getTileBelow(cell);
+    }
+    return $("col" + col + "row" + (row-1)).firstDescendant();
+}
+
+Puzzle.prototype.getTileBelow = function(cell) {
+    var src = cell.id.match(/col(\d+)row(\d+)/);
+    var col = parseInt(src[1])
+    var row = parseInt(src[2])
+    
+    if (row+1 > this.GameBoardHeight-1) {
+        return this.getTileAbove(cell);
+    }
+    return $('col' + col + 'row' + (row+1)).firstDescendant();
+}
+
+Puzzle.prototype.getTileLeft = function(cell) {
+    var src = cell.id.match(/col(\d+)row(\d+)/);
+    var col = parseInt(src[1])
+    var row = parseInt(src[2])
+    
+    if (col-1 < 0) {
+        return this.getTileRight(cell);
+    }
+    return $('col' + (col-1) + 'row' + row).firstDescendant();
+}
+
+Puzzle.prototype.getTileRight = function(cell) {
+    var src = cell.id.match(/col(\d+)row(\d+)/);
+    var col = parseInt(src[1])
+    var row = parseInt(src[2])
+    
+    if (col+1 > this.GameBoardWidth-1) {
+        return this.getTileLeft(cell);
+    }
+    return $('col' + (col+1) + 'row' + row).firstDescendant();
+}
+
+Puzzle.prototype.isShuffled = function() {
+    var cells = $$('div.cell');
+    var mixed_count = 0;
+    var not_mixed_count = 0;
+
+    for (var i=0; i<cells.size();i++) {
+        var tile = cells[i].firstDescendant();
+
+        if (tile) {
+            var match = tile.id.match(/tile_(\d+)/)
+            if (match && parseInt(match[1]) == i) {
+                not_mixed_count++;
+            }
+            else {
+                mixed_count++;
+            }
+        }
+    }
+
+    //if ((not_mixed_count * 10) < mixed_count)  {
+    if (not_mixed_count == 0) {
+        return true;
+    }
+    return false;
+}
+
+Puzzle.prototype.shuffleBoard = function(count) {
+
+    while (!this.isShuffled()) {
+        this.randomMove();
+    }
+}
+
+Puzzle.prototype.randomMove = function() {
+    var direction = Math.round(Math.random() * 3)
+
+    if (direction == 0) {
+       this.moveTile(this.getTileAbove(this.blank));
+    }
+    else if (direction == 1) {
+       this.moveTile(this.getTileBelow(this.blank));
+    }
+    else if (direction == 2) {
+       this.moveTile(this.getTileLeft(this.blank));
+    }
+    else if (direction == 3) {
+       this.moveTile(this.getTileRight(this.blank));
     }
 }
 
@@ -128,5 +216,21 @@ Puzzle.prototype.isFinished = function() {
     return true;
 }
 
-new Puzzle();
+Puzzle.prototype.winAnimation = function() {
+    function animateIt(id) {
+        Effect.DropOut(id, {duration: Math.round(Math.random() * 4) + 1});
+    }
+
+    function playAgain() {
+        if (confirm("Play again?")) {
+            window.location.reload();    
+        } 
+    }
+
+    $$('div.tile').each(function(item) {
+        setTimeout(function() { animateIt(item.id) }, Math.random() * 4000 + 1000);
+    });
+    setTimeout(playAgain, 10000);
+}
+
 
