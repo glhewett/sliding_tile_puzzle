@@ -1,0 +1,95 @@
+div#game {
+  padding: 0px;
+  margin: 0px auto;
+  padding: 0px; 
+}    
+ 
+div.row {
+  position: relative; 
+  margin: 0px;
+  padding: 0px;
+  clear: both;  
+}
+
+div.cell {
+  float: left;
+  margin: 0px;
+  padding: 0px;      
+  width: 150px;
+  height: 150px;  
+} 
+
+div.tile {
+  /*margin: 1px;*/
+  padding: 10px;
+  background-color: #ebebeb;
+  /*border: 1px solid #DDD;*/
+  font-size: 28pt;
+  height: 131px;
+  width: 131px;
+}               
+
+div.cell-active {
+  background-color: #00ff00;
+}    
+
+div#tile_0 {
+  background: transparent url(puzzle.jpg) 0px 0px no-repeat;
+}
+
+div#tile_1 {
+  background: transparent url(puzzle.jpg) -150px 0px no-repeat;
+}
+
+div#tile_2 {
+  background: transparent url(puzzle.jpg) -300px 0px no-repeat;
+}
+
+div#tile_3 { 
+    background: transparent url(puzzle.jpg) -450px 0px no-repeat;
+}
+
+div#tile_4 {
+  background: transparent url(puzzle.jpg) 0px -150px no-repeat;
+}
+
+div#tile_5 {
+  background: transparent url(puzzle.jpg) -150px -150px no-repeat;
+}
+
+div#tile_6 {
+  background: transparent url(puzzle.jpg) -300px -150px no-repeat;
+}
+
+div#tile_7 { 
+    background: transparent url(puzzle.jpg) -450px -150px no-repeat;
+}
+
+div#tile_8 {
+  background: transparent url(puzzle.jpg) 0px -300px no-repeat;
+}
+
+div#tile_9 {
+  background: transparent url(puzzle.jpg) -150px -300px no-repeat;
+}
+
+div#tile_10 {
+  background: transparent url(puzzle.jpg) -300px -300px no-repeat;
+}
+
+div#tile_11 { 
+    background: transparent url(puzzle.jpg) -450px -300px no-repeat;
+}
+
+div#tile_12 {
+  background: transparent url(puzzle.jpg) 0px -450px no-repeat;
+}
+
+div#tile_13 {
+  background: transparent url(puzzle.jpg) -150px -450px no-repeat;
+}
+
+div#tile_14 {
+  background: transparent url(puzzle.jpg) -300px -450px no-repeat;
+}
+
