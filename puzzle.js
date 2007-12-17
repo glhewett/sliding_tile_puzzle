@@ -21,6 +21,7 @@ Puzzle.prototype.startPlaying = function() {
 }
 
 Puzzle.prototype.stopPlaying = function() {
+    this.stopTimer();
 }
 
 Puzzle.prototype.findBlank = function() {
@@ -35,22 +36,32 @@ Puzzle.prototype.findBlank = function() {
     return null;
 }
 
+Puzzle.prototype.startTimer = function() {
+    this.timer_started = true;
+    var start_time = new Date();
+
+    this.Timer = new PeriodicalExecuter(function(pe) {
+        var now = new Date(); 
+        var diff = now - start_time;
+        var minutes = Math.floor(diff/(1000*60));
+        var seconds = Math.round((diff % (1000*60))/1000);
+        $('time_elapsed').update('Time: ' + minutes + ":" + seconds); 
+    }, 1);
+}
+
+Puzzle.prototype.stopTimer = function() {
+    this.Timer.stop();
+}
+
 Puzzle.prototype.clickCell = function(ev) {
     this.moveTile(Event.element(ev))
 
     if (!this.timer_started) {
-        this.timer_started = true;
-        var start_time = new Date();
-        this.Timer = new PeriodicalExecuter(function(pe) {
-            var now = new Date(); 
-            var diff = now - start_time;
-            var minutes = Math.floor(diff/(1000*60));
-            var seconds = Math.round((diff % (1000*60))/1000);
-            $('time_elapsed').update('Time: ' + minutes + ":" + seconds); 
-        }, 1);
+        this.startTimer();
     }
 
     if (this.isFinished()) {
+        this.stopPlaying();
         this.winAnimation();
     }
 }
