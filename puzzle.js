@@ -4,10 +4,23 @@ function Puzzle (width, height, image) {
 }
 
 Puzzle.prototype.initialize = function(width, height, image) {
+    this.play_started = false;
+    this.timer_started = false;
+    this.move_count = 0;
     this.createGameBoard(width,height);
     this.placeTiles();
     this.blank = this.findBlank();
     this.shuffleBoard(100);
+    this.startPlaying();
+}
+
+Puzzle.prototype.startPlaying = function() {
+    this.play_started = true;
+    this.timer_started = false;
+    this.move_count = 0;
+}
+
+Puzzle.prototype.stopPlaying = function() {
 }
 
 Puzzle.prototype.findBlank = function() {
@@ -24,6 +37,18 @@ Puzzle.prototype.findBlank = function() {
 
 Puzzle.prototype.clickCell = function(ev) {
     this.moveTile(Event.element(ev))
+
+    if (!this.timer_started) {
+        this.timer_started = true;
+        var start_time = new Date();
+        this.Timer = new PeriodicalExecuter(function(pe) {
+            var now = new Date(); 
+            var diff = now - start_time;
+            var minutes = Math.floor(diff/(1000*60));
+            var seconds = Math.round((diff % (1000*60))/1000);
+            $('time_elapsed').update('Time: ' + minutes + ":" + seconds); 
+        }, 1);
+    }
 
     if (this.isFinished()) {
         this.winAnimation();
@@ -87,6 +112,11 @@ Puzzle.prototype.moveTile = function(el) {
         var new_blank = el.ancestors().first();
         this.blank.insert(el);
         this.blank = new_blank;
+        this.move_count++;
+    }
+
+    if (this.play_started) {
+        $('move_count').update("Moves: " + this.move_count);
     }
 }
 
@@ -177,10 +207,13 @@ Puzzle.prototype.isShuffled = function() {
 }
 
 Puzzle.prototype.shuffleBoard = function(count) {
+    var count = 0;
 
     while (!this.isShuffled()) {
+        count++;
         this.randomMove();
     }
+    $('shuffle_moves').update("Shuffle: " + count + " moves");
 }
 
 Puzzle.prototype.randomMove = function() {

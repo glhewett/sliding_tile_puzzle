@@ -1,11 +1,16 @@
+/* vim:set sw=2 ts=2 et: */
+body {
+  font-family: verdana,"Lucida Grande",arial,helvetica,sans-serif;
+  color:#333333;
+}
+
 div#game {
-  padding: 0px;
-  margin: 0px auto;
-  padding: 0px; 
+  padding: 5px;
+  margin: 10px auto;
 }    
  
 div.row {
-  position: relative; 
+  /*position: relative; */
   margin: 0px;
   padding: 0px;
   clear: both;  
@@ -20,18 +25,45 @@ div.cell {
 } 
 
 div.tile {
-  /*margin: 1px;*/
   padding: 10px;
-  background-color: #ebebeb;
-  /*border: 1px solid #DDD;*/
-  font-size: 28pt;
   height: 131px;
   width: 131px;
 }               
 
-div.cell-active {
-  background-color: #00ff00;
-}    
+div#dashboard {
+  margin: 0;
+  width: 600px;
+  padding: 5px;
+  background-color: #ddddff;
+  border: solid 1px #cbcbcb;
+  text-align: center;
+}
+
+div#dashboard h1 {
+  margin: 5px;
+  padding: 5px;
+  font-size: 24pt;
+}
+
+div#dashboard ul {
+  margin-left: 0;
+  padding-left: 0;
+  display: inline;
+}
+
+div#dashboard ul li {
+  padding: 3px 15px;
+  border-left: 1px solid #333;
+  list-style: none;
+  display: inline
+}
+
+div#dashboard ul li.first {
+  margin-left: 0;
+  border-left: none;
+  list-style: none;
+  display: inline;
+}
 
 div#tile_0 {
   background: transparent url(puzzle.jpg) 0px 0px no-repeat;
