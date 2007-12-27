@@ -1,12 +1,14 @@
 // Puzzle constructor
-function Puzzle (width, height, image) {
-    this.initialize(width, height, image);
+function Puzzle (width, height) {
+    this.initialize(width, height);
 }
 
-Puzzle.prototype.initialize = function(width, height, image) {
+Puzzle.prototype.initialize = function(width, height) {
     this.play_started = false;
     this.timer_started = false;
-    this.move_count = 0;
+    this.move_count = 0;   
+    this.image_count = 4;
+    this.image_path = this.getImagePath();
     this.createGameBoard(width,height);
     this.placeTiles();
     this.blank = this.findBlank();
@@ -68,9 +70,25 @@ Puzzle.prototype.clickCell = function(ev) {
 
 Puzzle.prototype.placeTiles = function() {
     var cells = $$('div.cell');
+    var col = 0;
+    var row = 0;
 
     for (var i=0; i < cells.length - 1; i++) {
-        cells[i].insert(new Element('div', {'class': 'tile', 'id': 'tile_' + i}).observe('click', this.clickCell.bindAsEventListener(this)));        
+                                  
+        var xoffset = row * -150;
+        var yoffset = col * -150;            
+        
+        var tile_style = "background: transparent url(" + this.image_path + ") " + yoffset + "px " + xoffset + "px no-repeat;"
+        cells[i].insert(new Element('div', {'class': 'tile', 'id': 'tile_' + i, 'style': tile_style}).observe('click', this.clickCell.bindAsEventListener(this)));   
+                                             
+        console.log(this.GameBoardWidth)
+        if (col >= this.GameBoardWidth - 1) {  
+            row++;
+            col=0;
+        }
+        else {
+            col++;
+        }     
     }
 }
 
@@ -258,6 +276,12 @@ Puzzle.prototype.isFinished = function() {
         }
     }
     return true;
+} 
+
+Puzzle.prototype.getImagePath = function() {
+    this.image_count
+    var random_number = 1 + Math.floor(Math.random() * this.image_count);
+    return "images/puzzle" + random_number + ".jpg";
 }
 
 Puzzle.prototype.winAnimation = function() {

@@ -20,14 +20,15 @@ div.cell {
   float: left;
   margin: 0px;
   padding: 0px;      
-  width: 150px;
-  height: 150px;  
+  width: 152px;
+  height: 152px;  
 } 
 
 div.tile {
   padding: 10px;
-  height: 131px;
-  width: 131px;
+  height: 129px;
+  width: 129px;    
+  border: 1px solid #fff;
 }               
 
 div#dashboard {
@@ -65,6 +66,7 @@ div#dashboard ul li.first {
   display: inline;
 }
 
+/*
 div#tile_0 {
   background: transparent url(puzzle.jpg) 0px 0px no-repeat;
 }
@@ -125,3 +127,4 @@ div#tile_14 {
   background: transparent url(puzzle.jpg) -300px -450px no-repeat;
 }
 
+*/
