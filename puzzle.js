@@ -81,7 +81,6 @@ Puzzle.prototype.placeTiles = function() {
         var tile_style = "background: transparent url(" + this.image_path + ") " + yoffset + "px " + xoffset + "px no-repeat;"
         cells[i].insert(new Element('div', {'class': 'tile', 'id': 'tile_' + i, 'style': tile_style}).observe('click', this.clickCell.bindAsEventListener(this)));   
                                              
-        console.log(this.GameBoardWidth)
         if (col >= this.GameBoardWidth - 1) {  
             row++;
             col=0;
