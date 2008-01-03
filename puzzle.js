@@ -7,7 +7,7 @@ Puzzle.prototype.initialize = function(width, height) {
     this.play_started = false;
     this.timer_started = false;
     this.move_count = 0;   
-    this.image_count = 4;
+    this.image_count = 5;
     this.image_path = this.getImagePath();
     this.createGameBoard(width,height);
     this.placeTiles();
